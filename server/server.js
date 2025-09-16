@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
   });
 
   // Handle chat messages
-  socket.on('send_message', (messageData) => {
+  socket.on('send_message', (messageData, callback) => {
     const message = {
       ...messageData,
       id: Date.now(),
@@ -52,28 +52,33 @@ io.on('connection', (socket) => {
       senderId: socket.id,
       timestamp: new Date().toISOString(),
     };
-    
+
     messages.push(message);
-    
+
     // Limit stored messages to prevent memory issues
     if (messages.length > 100) {
       messages.shift();
     }
-    
+
     io.emit('receive_message', message);
+
+    // Send acknowledgment back to sender
+    if (callback) {
+      callback({ status: 'delivered', messageId: message.id });
+    }
   });
 
   // Handle typing indicator
   socket.on('typing', (isTyping) => {
     if (users[socket.id]) {
       const username = users[socket.id].username;
-      
+
       if (isTyping) {
         typingUsers[socket.id] = username;
       } else {
         delete typingUsers[socket.id];
       }
-      
+
       io.emit('typing_users', Object.values(typingUsers));
     }
   });
@@ -87,10 +92,15 @@ io.on('connection', (socket) => {
       message,
       timestamp: new Date().toISOString(),
       isPrivate: true,
+      to: to,
     };
-    
+
+    // Send to recipient
     socket.to(to).emit('private_message', messageData);
+    // Send back to sender for confirmation
     socket.emit('private_message', messageData);
+
+    console.log(`Private message from ${messageData.sender} to ${users[to]?.username || 'Unknown'}`);
   });
 
   // Handle disconnection
@@ -100,10 +110,10 @@ io.on('connection', (socket) => {
       io.emit('user_left', { username, id: socket.id });
       console.log(`${username} left the chat`);
     }
-    
+
     delete users[socket.id];
     delete typingUsers[socket.id];
-    
+
     io.emit('user_list', Object.values(users));
     io.emit('typing_users', Object.values(typingUsers));
   });
