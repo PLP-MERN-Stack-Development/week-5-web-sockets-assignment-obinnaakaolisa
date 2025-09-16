@@ -7,6 +7,33 @@ A modern, Facebook Messenger-style real-time chat application built with Socket.
 ![Socket.io](https://img.shields.io/badge/Socket.io-4.5.4-black)
 ![Express](https://img.shields.io/badge/Express-4.18.2-green)
 
+## � Apptlication Screenshots
+
+### Login Interface
+Clean and modern login screen with Facebook Messenger-style design.
+
+![Login Interface](screenshots/login.png)
+
+### Global Chat Interface
+Main chat interface showing the global chat room with online users sidebar.
+
+![Global Chat Interface](screenshots/global-chat-interface.png)
+
+### Private Chat Interface
+Private messaging interface with individual user conversations.
+
+![Private Chat Interface](screenshots/private-chat-interface.png)
+
+### Online Users Interface
+Sidebar showing online users with status indicators and easy navigation.
+
+![Online Users Interface](screenshots/online-users-interface.png)
+
+### Settings Panel
+Customizable settings panel for notifications and app preferences.
+
+![Settings Panel](screenshots/settings-panel.png)
+
 ## 🚀 Features
 
 ### ✅ Core Chat Functionality
@@ -134,10 +161,10 @@ npm run dev
 ## 🎯 Usage Guide
 
 ### Getting Started
-1. **Login**: Enter your username on the login screen
-2. **Global Chat**: By default, you'll be in the global chat room
-3. **Private Messages**: Click on any user in the sidebar to start a private conversation
-4. **Settings**: Click the settings icon to customize notifications
+1. **Login**: Enter your username on the clean login screen (see [Login Interface](screenshots/login.png))
+2. **Global Chat**: By default, you'll be in the global chat room (see [Global Chat Interface](screenshots/global-chat-interface.png))
+3. **Private Messages**: Click on any user in the sidebar to start a private conversation (see [Private Chat Interface](screenshots/private-chat-interface.png))
+4. **Settings**: Click the settings icon to customize notifications (see [Settings Panel](screenshots/settings-panel.png))
 5. **Logout**: Click the logout button to disconnect
 
 ### Features Overview
@@ -155,8 +182,8 @@ npm run dev
 - Settings panel allows you to toggle notification preferences
 
 #### User Interface
-- **Sidebar**: Shows online users and chat selection
-- **Chat Area**: Displays messages with timestamps
+- **Sidebar**: Shows online users and chat selection (see [Online Users Interface](screenshots/online-users-interface.png))
+- **Chat Area**: Displays messages with timestamps (see [Global Chat Interface](screenshots/global-chat-interface.png))
 - **Message Input**: Type and send messages
 - **Status Indicators**: Show online status and typing activity
 
@@ -228,6 +255,18 @@ NODE_ENV=production
 SERVER_PORT=5001
 CLIENT_URL=https://your-frontend-domain.com
 ```
+
+## 🎨 Visual Showcase
+
+The application features a modern, clean interface inspired by Facebook Messenger:
+
+| Feature | Screenshot | Description |
+|---------|------------|-------------|
+| **Login** | ![Login](screenshots/login.png) | Clean login interface with gradient background |
+| **Global Chat** | ![Global Chat](screenshots/global-chat-interface.png) | Main chat interface with message bubbles and sidebar |
+| **Private Chat** | ![Private Chat](screenshots/private-chat-interface.png) | One-on-one messaging with user-specific styling |
+| **Online Users** | ![Online Users](screenshots/online-users-interface.png) | Sidebar with online status indicators |
+| **Settings** | ![Settings](screenshots/settings-panel.png) | Customizable notification preferences |
 
 ## 📱 Browser Compatibility
 
