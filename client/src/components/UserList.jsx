@@ -1,29 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSocket } from '../socket/socket';
 
-const UserList = () => {
+const UserList = ({ currentUser, onUserSelect, selectedUser }) => {
   const { users, sendPrivateMessage } = useSocket();
 
-  const handlePrivateMessage = (userId) => {
-    const message = prompt('Enter your private message:');
-    if (message) {
-      sendPrivateMessage(userId, message);
-    }
+  const getInitials = (name) => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   };
 
+  const handleUserClick = (user) => {
+    onUserSelect(user);
+  };
+
+  const filteredUsers = users.filter(user => user.username !== currentUser);
+
   return (
-    <div>
-      <h2>Online Users</h2>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            {user.username}{' '}
-            <button onClick={() => handlePrivateMessage(user.id)}>
-              Private Message
-            </button>
-          </li>
+    <div className="users-section">
+      <div className="users-title">
+        Online ({filteredUsers.length})
+      </div>
+      <div>
+        {/* Global Chat Option */}
+        <button
+          className={`user-item ${!selectedUser ? 'active' : ''}`}
+          onClick={() => onUserSelect(null)}
+        >
+          <div className="user-item-avatar">
+            #
+          </div>
+          <div className="user-item-name">Global Chat</div>
+        </button>
+
+        {/* Individual Users */}
+        {filteredUsers.map((user) => (
+          <button
+            key={user.id}
+            className={`user-item ${selectedUser?.id === user.id ? 'active' : ''}`}
+            onClick={() => handleUserClick(user)}
+          >
+            <div className="user-item-avatar">
+              {getInitials(user.username)}
+              <div className="online-indicator"></div>
+            </div>
+            <div className="user-item-name">{user.username}</div>
+          </button>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

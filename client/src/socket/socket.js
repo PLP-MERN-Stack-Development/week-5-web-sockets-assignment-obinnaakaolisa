@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { io } from 'socket.io-client';
+import { notificationManager } from '../utils/notifications';
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001';
 
@@ -26,10 +27,20 @@ export const useSocket = () => {
 
   const onReceiveMessage = useCallback((message) => {
     setMessages((prev) => [...prev, message]);
+
+    // Show notification for new messages (not from current user)
+    if (message.senderId !== socket.id) {
+      notificationManager.notifyNewMessage(message.sender, message.message, false);
+    }
   }, []);
 
   const onPrivateMessage = useCallback((message) => {
     setMessages((prev) => [...prev, message]);
+
+    // Show notification for private messages (not from current user)
+    if (message.senderId !== socket.id) {
+      notificationManager.notifyNewMessage(message.sender, message.message, true);
+    }
   }, []);
 
   const onUserList = useCallback((userList) => {
@@ -46,6 +57,7 @@ export const useSocket = () => {
         timestamp: new Date().toISOString(),
       },
     ]);
+    notificationManager.notifyUserJoined(user.username);
   }, []);
 
   const onUserLeft = useCallback((user) => {
@@ -58,6 +70,7 @@ export const useSocket = () => {
         timestamp: new Date().toISOString(),
       },
     ]);
+    notificationManager.notifyUserLeft(user.username);
   }, []);
 
   const onTypingUsers = useCallback((users) => {
@@ -98,7 +111,9 @@ export const useSocket = () => {
   };
 
   const sendMessage = (message) => {
-    socket.emit('send_message', { message });
+    socket.emit('send_message', { message }, (acknowledgment) => {
+      console.log('Message delivered:', acknowledgment);
+    });
   };
 
   const sendPrivateMessage = (to, message) => {
